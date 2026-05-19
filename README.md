@@ -1,6 +1,14 @@
 # Diabetes Prediction Web Application using Logistic Regression
 
-## Project Overview
+# Live Demo
+
+Deployed Application:
+
+https://diabetes-prediction-app-t6bc.onrender.com
+
+---
+
+# Project Overview
 
 This project predicts whether a person has diabetes using Machine Learning and displays the prediction through a Flask web application.
 
@@ -25,6 +33,7 @@ Output:
 
 ```text
 0 → No Diabetes
+
 1 → Diabetes
 ```
 
@@ -60,6 +69,8 @@ Build Flask Website
 Take User Input
 ↓
 Predict Diabetes
+↓
+Deploy on Render
 ```
 
 ---
@@ -75,15 +86,16 @@ DiabetesPrediction/
 ├── model.pkl
 ├── scaler.pkl
 ├── app.py
+├── requirements.txt
+├── Procfile
+├── README.md
 │
 ├── templates/
 │   ├── index.html
 │   └── result.html
 │
-├── static/
-│   └── style.css
-│
-└── README.md
+└── static/
+    └── style.css
 ```
 
 ---
@@ -91,95 +103,78 @@ DiabetesPrediction/
 # Description of Files
 
 | File | Purpose |
-|--------|---------|
+|--------|----------|
 | dataset.csv | Diabetes dataset |
-| train_model.ipynb | Learning, experiments, testing |
+| train_model.ipynb | Learning and experimentation |
 | train_model.py | Final training script |
 | model.pkl | Saved trained model |
 | scaler.pkl | Saved scaler |
 | app.py | Flask backend |
 | templates | HTML pages |
 | static | CSS styling |
-| README.md | Project documentation |
+| requirements.txt | Dependency list |
+| Procfile | Deployment configuration |
+| README.md | Documentation |
 
 ---
 
-# Step 1: Create Project Folder
+# Installation
 
-Create:
-
-```text
-AIML_Journey/
-│
-└── Projects/
-    │
-    └── DiabetesPrediction/
-```
-
-Move dataset into this folder.
-
-Example:
-
-```text
-DiabetesPrediction/
-│
-└── dataset.csv
-```
-
----
-
-# Step 2: Install Required Libraries
-
-Open terminal:
+Clone repository:
 
 ```bash
-pip install pandas
-pip install numpy
-pip install scikit-learn
-pip install flask
-pip install imbalanced-learn
+git clone YOUR_GITHUB_REPOSITORY_URL
 ```
 
-Or:
+Move into project folder:
 
 ```bash
-pip install pandas numpy scikit-learn flask imbalanced-learn
+cd DiabetesPrediction
 ```
 
-Check installed packages:
+Install dependencies:
 
 ```bash
-pip list
+pip install -r requirements.txt
 ```
 
 ---
 
-# Step 3: Create Notebook
+# Model Information
 
-Create:
+Algorithm:
 
-```text
-train_model.ipynb
-```
+- Logistic Regression
 
-Purpose:
+Features:
 
-- Learning
-- Experimentation
-- Testing
-- Evaluation
+- Age
+- Glucose
+- BMI
+
+Preprocessing:
+
+- Missing value handling
+- Oversampling
+- Feature scaling
+
+Evaluation:
+
+- Accuracy
+- Confusion Matrix
+- Classification Report
 
 ---
 
-# Step 4: Load Dataset
+# Step 1: Load Dataset
 
 ```python
 import pandas as pd
 
-df=pd.read_csv("dataset.csv")
+df = pd.read_csv("dataset.csv")
 ```
 
-Check data:
+Check:
 
 ```python
 print(df.shape)
@@ -193,26 +188,12 @@ Purpose:
 
 - Check rows
 - Check columns
-- Check datatypes
+- Check data types
 - Check missing values
 
 ---
 
-# Step 5: Check Fake Missing Values
-
-Some datasets store missing values as:
-
-```text
-0
-```
-
-instead of:
-
-```text
-NaN
-```
-
-Check:
+# Step 2: Check Fake Missing Values
 
 ```python
 print(
@@ -222,7 +203,7 @@ print(
 
 ---
 
-# Step 6: Replace Fake Missing Values
+# Step 3: Replace Fake Missing Values
 
 ```python
 df["Glucose"]=df["Glucose"].replace(
@@ -242,23 +223,17 @@ Median handles unusual values better.
 
 ---
 
-# Step 7: Select Features and Labels
-
-Features:
+# Step 4: Select Features and Labels
 
 ```python
 X=df[["Age","Glucose","BMI"]]
-```
 
-Label:
-
-```python
 y=df["Outcome"]
 ```
 
 ---
 
-# Step 8: Split Dataset
+# Step 5: Split Dataset
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -271,25 +246,9 @@ random_state=42
 )
 ```
 
-Meaning:
-
-```text
-80% → Training Data
-
-20% → Testing Data
-```
-
 ---
 
-# Step 9: Balance Training Data
-
-Check imbalance:
-
-```python
-print(y.value_counts())
-```
-
-Balance:
+# Step 6: Balance Training Data
 
 ```python
 from imblearn.over_sampling import RandomOverSampler
@@ -304,26 +263,9 @@ y_train
 )
 ```
 
-Important:
-
-Balance only:
-
-```text
-X_train
-y_train
-```
-
-Do NOT balance before splitting.
-
-Reason:
-
-```text
-Avoid data leakage
-```
-
 ---
 
-# Step 10: Scale Features
+# Step 7: Scale Features
 
 ```python
 from sklearn.preprocessing import StandardScaler
@@ -339,23 +281,9 @@ X_test
 )
 ```
 
-Reason:
-
-Feature ranges differ:
-
-```text
-Age → 50
-
-BMI → 30
-
-Glucose → 180
-```
-
-Scaling converts features into similar ranges.
-
 ---
 
-# Step 11: Train Logistic Regression Model
+# Step 8: Train Model
 
 ```python
 from sklearn.linear_model import LogisticRegression
@@ -368,15 +296,9 @@ y_train
 )
 ```
 
-Purpose:
-
-```text
-Train model using training data
-```
-
 ---
 
-# Step 12: Check Accuracy
+# Step 9: Check Accuracy
 
 ```python
 accuracy=model.score(
@@ -392,7 +314,7 @@ accuracy
 
 ---
 
-# Step 13: Evaluate Model
+# Step 10: Evaluate Model
 
 Predictions:
 
@@ -430,7 +352,7 @@ predictions
 
 ---
 
-# Step 14: Save Model and Scaler
+# Step 11: Save Model
 
 ```python
 import pickle
@@ -452,7 +374,7 @@ open(
 )
 ```
 
-Generated files:
+Generated:
 
 ```text
 model.pkl
@@ -462,132 +384,19 @@ scaler.pkl
 
 ---
 
-# Step 15: Create Final Training Script
+# Run Project Locally
 
-Create:
-
-```text
-train_model.py
-```
-
-Move final cleaned code into this file.
-
-Purpose:
-
-- Final production code
-- Generate model.pkl
-- Generate scaler.pkl
-
----
-
-# Step 16: Train Model Using Terminal
-
-Move into project:
-
-```bash
-cd Projects\DiabetesPrediction
-```
-
-Run:
+Train model:
 
 ```bash
 python train_model.py
 ```
 
-Expected output:
-
-```text
-Accuracy: 0.80...
-
-Model and scaler saved
-```
-
-After successful execution:
-
-```text
-DiabetesPrediction/
-│
-├── model.pkl
-├── scaler.pkl
-```
-
----
-
-# Step 17: Create Flask Application
-
-Create:
-
-```text
-app.py
-```
-
-Responsibilities:
-
-- Load model
-- Load scaler
-- Accept user input
-- Scale input
-- Predict output
-- Display result
-
-Run:
+Run Flask app:
 
 ```bash
 python app.py
 ```
-
-Expected:
-
-```text
-Running on:
-
-http://127.0.0.1:5000
-```
-
----
-
-# Step 18: Create Frontend Files
-
-Inside:
-
-```text
-templates/
-```
-
-Create:
-
-```text
-index.html
-
-result.html
-```
-
-Inside:
-
-```text
-static/
-```
-
-Create:
-
-```text
-style.css
-```
-
-Purpose:
-
-```text
-index.html
-→ User input page
-
-result.html
-→ Display prediction
-
-style.css
-→ Styling
-```
-
----
 
 Open browser:
 
@@ -597,74 +406,9 @@ http://127.0.0.1:5000
 
 ---
 
-# Future Improvements
-
-Possible upgrades:
-
-- Add more health parameters
-- Add confidence score
-- Improve UI
-- Deploy online
-- Add charts
-- Add database
-- Use advanced models
-
----
-
 # GitHub and Render Deployment Guide
 
-This section explains how to save the project to GitHub and deploy it on Render.
-
----
-
-# Step 1: Verify Project Structure
-
-Before pushing to GitHub, ensure the project structure looks like this:
-
-```text
-DiabetesPrediction/
-│
-├── dataset.csv
-├── train_model.ipynb
-├── train_model.py
-├── model.pkl
-├── scaler.pkl
-├── app.py
-├── requirements.txt
-├── Procfile
-├── README.md
-│
-├── templates/
-│   ├── index.html
-│   └── result.html
-│
-└── static/
-    └── style.css
-```
-
-Required files:
-
-- app.py
-- model.pkl
-- scaler.pkl
-- requirements.txt
-- Procfile
-- templates/
-- static/
-
----
-
-# Step 2: Install Gunicorn
-
-Render uses Gunicorn to run Flask applications.
-
-Open terminal inside project folder:
-
-```bash
-cd Projects\DiabetesPrediction
-```
-
-Install Gunicorn:
+## Install Gunicorn
 
 ```bash
 pip install gunicorn
@@ -672,45 +416,21 @@ pip install gunicorn
 
 ---
 
-# Step 3: Create requirements.txt
-
-Generate requirements file:
+## Create requirements.txt
 
 ```bash
 pip freeze > requirements.txt
 ```
 
-Purpose:
-
-```text
-Store all project dependencies
-```
-
-Example:
-
-```text
-Flask
-pandas
-numpy
-scikit-learn
-imbalanced-learn
-gunicorn
-```
-
 ---
 
-# Step 4: Create Procfile
+## Create Procfile
 
-Create a file named:
+Create:
 
 ```text
 Procfile
 ```
-
-Important:
-
-- No extension
-- Do NOT create Procfile.txt
 
 Add:
 
@@ -718,176 +438,57 @@ Add:
 web: gunicorn app:app
 ```
 
-Explanation:
-
-```text
-app.py
-↓
-Flask object named app
-↓
-Gunicorn starts application
-```
-
 ---
 
-# Step 5: Initialize Git Repository
-
-Open terminal inside:
-
-```text
-DiabetesPrediction
-```
-
-Initialize Git:
+## Initialize Git
 
 ```bash
 git init
 ```
 
-Purpose:
-
-```text
-Start Git tracking for project
-```
-
 ---
 
-# Step 6: Add Files to Git
-
-Add all project files:
+## Add files
 
 ```bash
 git add .
 ```
 
-Purpose:
-
-```text
-Add all files to Git staging area
-```
-
 ---
 
-# Step 7: Create Commit
-
-Save project snapshot:
+## Commit project
 
 ```bash
 git commit -m "Initial Diabetes Prediction Project"
 ```
 
-Purpose:
-
-```text
-Create first saved version of project
-```
-
 ---
 
-# Step 8: Create GitHub Repository
-
-Open GitHub.
-
-Click:
-
-```text
-New Repository
-```
-
-Enter:
-
-```text
-Repository Name:
-
-DiabetesPrediction
-```
-
-Keep repository:
-
-```text
-Public
-```
-
-Click:
-
-```text
-Create Repository
-```
-
----
-
-# Step 9: Connect Local Project with GitHub
-
-GitHub provides repository URL.
-
-Example:
-
-```text
-https://github.com/username/DiabetesPrediction.git
-```
-
-Connect local project:
+## Connect repository
 
 ```bash
 git remote add origin YOUR_REPOSITORY_URL
 ```
 
-Example:
-
-```bash
-git remote add origin https://github.com/username/DiabetesPrediction.git
-```
-
 ---
 
-# Step 10: Push Project to GitHub
-
-Push files:
+## Push project
 
 ```bash
 git push -u origin main
 ```
 
-If branch name is master:
-
-```bash
-git push -u origin master
-```
-
-Purpose:
-
-```text
-Upload project to GitHub
-```
-
-Verify in GitHub that you can see:
-
-```text
-app.py
-model.pkl
-scaler.pkl
-templates/
-static/
-requirements.txt
-Procfile
-README.md
-```
-
 ---
 
-# Step 11: Login to Render
+## Deploy on Render
 
-Open Render:
+Open:
 
 https://render.com
 
-Login using GitHub account.
+Login with GitHub
 
----
-
-# Step 12: Create Web Service
-
-Inside Render:
+Click:
 
 ```text
 New +
@@ -895,59 +496,21 @@ New +
 Web Service
 ```
 
-Select:
+Connect repository.
 
-```text
-Build and deploy from Git repository
-```
+Set:
 
----
-
-# Step 13: Connect GitHub Repository
-
-Choose:
-
-```text
-DiabetesPrediction
-```
-
-Click:
-
-```text
-Connect
-```
-
----
-
-# Step 14: Configure Deployment Settings
-
-Name:
-
-```text
-diabetes-prediction-app
-```
-
-Language:
-
-```text
-Python
-```
-
-Build Command:
+Build command:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Start Command:
+Start command:
 
 ```bash
 gunicorn app:app
 ```
-
----
-
-# Step 15: Deploy Application
 
 Click:
 
@@ -955,47 +518,11 @@ Click:
 Deploy Web Service
 ```
 
-Render automatically performs:
-
-```text
-Clone GitHub repository
-↓
-Install dependencies
-↓
-Load model.pkl
-↓
-Load scaler.pkl
-↓
-Run Flask application
-↓
-Generate public URL
-```
-
-Wait several minutes.
-
 ---
 
-# Step 16: Open Deployed Application
+# Updating Project
 
-Render generates a URL similar to:
-
-```text
-https://project-name.onrender.com
-```
-
-Example:
-
-```text
-https://diabetes-prediction-app-t6bc.onrender.com
-```
-
-Open in browser and test predictions.
-
----
-
-# Updating Project Later
-
-If you make changes:
+Whenever you modify code:
 
 ```bash
 git add .
@@ -1005,95 +532,29 @@ git commit -m "Updated project"
 git push
 ```
 
-Render automatically:
-
-```text
-Detects GitHub changes
-↓
-Starts redeployment
-↓
-Updates website
-```
-
-No manual deployment needed.
+Render automatically redeploys.
 
 ---
 
-# Common Errors and Fixes
+# Future Improvements
 
-### Error:
+Possible improvements:
 
-```text
-ModuleNotFoundError
-```
-
-Fix:
-
-```bash
-pip freeze > requirements.txt
-
-git add .
-
-git commit -m "Updated requirements"
-
-git push
-```
+- Add more health parameters
+- Add confidence score
+- Improve UI
+- Add charts
+- Add database support
+- Use advanced ML models
 
 ---
-
-### Error:
-
-```text
-No module named gunicorn
-```
-
-Fix:
-
-```bash
-pip install gunicorn
-
-pip freeze > requirements.txt
-```
-
----
-
-### Error:
-
-```text
-model.pkl not found
-```
-
-Fix:
-
-Verify GitHub contains:
-
-```text
-model.pkl
-scaler.pkl
-```
-
----
-
-### Error:
-
-```text
-Application failed to start
-```
-
-Fix:
-
-Open:
-
-```text
-Render Dashboard
-↓
-Logs
-```
-
-Read deployment error details.
 
 # Author
 
 Akhila Kanneboina
 
-AI/ML Learning Journey Project
+AI/ML Enthusiast | Machine Learning Learner
+
+GitHub: https://github.com/YOUR_USERNAME
+
+LinkedIn: https://linkedin.com/in/YOUR_PROFILE
