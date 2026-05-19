@@ -555,6 +555,6 @@ Akhila Kanneboina
 
 AI/ML Enthusiast | Machine Learning Learner
 
-GitHub: https://github.com/YOUR_USERNAME
+GitHub: https://github.com/emailakhilak
 
-LinkedIn: https://linkedin.com/in/YOUR_PROFILE
+LinkedIn: https://www.linkedin.com/in/kanneboina-akhila-76a1b1328/
